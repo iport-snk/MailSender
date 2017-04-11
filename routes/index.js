@@ -11,7 +11,7 @@ let router = express.Router(),
         service: 'gmail',
         auth: {
             user: 'oleg.kyrpenko@gmail.com',
-            pass: 'Abvargl3'
+            pass: 'xxxx'
         }
     });
 let send = function(params){
