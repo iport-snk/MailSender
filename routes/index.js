@@ -10,14 +10,14 @@ let router = express.Router(),
     transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'oleg.kyrpenko@gmail.com',
-            pass: 'xxxx'
+            user: 'info@iport.net.ua',
+            pass: 'xxx'
         }
     });
-let send = function(params){
-    return new Promise((resolve, reject) => {
+let send = function(params, success, fail){
+
         let mailOptions = {
-            from: '"Fred Foo" <oleg.kyrpenko@gmail.com>', // sender address
+            from: '"IPORT" <info@iport.net.ua>', // sender address
             to: params.address, // list of receivers
             subject: params.subject,
             text: params.body,
@@ -27,13 +27,13 @@ let send = function(params){
             }]
         };
         transporter.sendMail(mailOptions, (error, info) => {
-            if (err) {
-                reject(err);
+            if (error) {
+                fail(error);
             } else {
-                resolve(info);
+                success(info);
             }
         });
-    });
+
 
 };
 
@@ -55,11 +55,14 @@ router.post('/', function(req, res, next) {
             subject: fields.subject[0],
             body: fields.body[0],
             buffer: buf
-        }).then((info) => {
+        },(info) => {
             console.log('The file has been saved!');
             res.writeHead(200, {'content-type': 'text/plain'});
             res.end('received upload:\n\n');
             //res.end(util.inspect({fields: fields, files: files}));
+        },(err) => {
+            res.writeHead(500, {'content-type': 'text/plain'});
+            res.end(util.inspect(err));
         });
         //fs.writeFile('D:\\Projects\\MailSender\\tmp\\i.pdf', buf, function(err){
         //    if (err) throw err;
