@@ -23,7 +23,7 @@ let send = function(params, success, fail){
             text: params.body,
             attachments: [{
                 content: params.buffer,
-                filename: 'invoice-8.pdf'
+                filename: params.filename
             }]
         };
         transporter.sendMail(mailOptions, (error, info) => {
@@ -53,6 +53,7 @@ router.post('/', function(req, res, next) {
         send({
             address: fields.address[0],
             subject: fields.subject[0],
+            filename: fields.filename[0],
             body: fields.body[0],
             buffer: buf
         },(info) => {
